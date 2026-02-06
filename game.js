@@ -1,6 +1,24 @@
 /**
- * Tower of Hanoi Game Logic
+ * Tower of Hanoi Game Logic with Firebase Ranking
  */
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getDatabase, ref, push, set, onValue, query, orderByChild, limitToFirst } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+// Your Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyDc3K47vyQgRXxj93abTxy8w7Aqp5aWuZs",
+    authDomain: "hanoi-tower-65812.firebaseapp.com",
+    projectId: "hanoi-tower-65812",
+    storageBucket: "hanoi-tower-65812.firebasestorage.app",
+    messagingSenderId: "18952793189",
+    appId: "1:18952793189:web:c4328578078c94db1b6a8c",
+    measurementId: "G-DSRS022MWB"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
 class TowerOfHanoi {
     constructor() {
@@ -38,6 +56,13 @@ class TowerOfHanoi {
         this.winScreen = document.getElementById('win-screen');
         this.finalMovesEl = document.getElementById('final-moves');
         this.difficultySelect = document.getElementById('difficulty');
+
+        // Ranking elements
+        this.playerNameInput = document.getElementById('player-name');
+        this.submitScoreBtn = document.getElementById('submit-score');
+        this.rankingContainer = document.getElementById('ranking-container');
+        this.rankingList = document.getElementById('ranking-list');
+        this.closeRankingBtn = document.getElementById('close-ranking');
     }
 
     reset() {
@@ -55,6 +80,7 @@ class TowerOfHanoi {
 
         this.render();
         this.winScreen.classList.add('hidden');
+        document.getElementById('ranking-input').classList.remove('hidden');
     }
 
     render() {
@@ -66,18 +92,16 @@ class TowerOfHanoi {
                 const diskEl = document.createElement('div');
                 diskEl.className = 'disk';
 
-                // Only mark as selected if it's the exact disk and on the correct peg
                 if (this.selectedDisk === diskSize &&
                     this.selectedPegIndex === pegIdx &&
                     idx === disks.length - 1) {
                     diskEl.classList.add('selected');
                 }
 
-                // Scale width based on disk size (min 40px, max 180px)
                 const width = 40 + (diskSize * (140 / this.numDisks));
                 diskEl.style.width = `${width}px`;
                 diskEl.style.background = this.colors[(diskSize - 1) % this.colors.length];
-                diskEl.dataset.size = diskSize;
+                diskEl.innerText = diskSize;
 
                 diskContainer.appendChild(diskEl);
             });
@@ -85,27 +109,18 @@ class TowerOfHanoi {
     }
 
     setupEvents() {
-        console.log("Setting up events for pegs:", this.pegEls);
         this.pegEls.forEach((pegEl, index) => {
-            pegEl.addEventListener('click', (e) => {
-                console.log(`Peg ${index} clicked`, e.target);
-                this.handlePegClick(index);
-            });
+            pegEl.addEventListener('click', () => this.handlePegClick(index));
         });
 
-        document.getElementById('reset-btn').addEventListener('click', () => {
-            console.log("Reset button clicked");
-            this.reset();
-        });
+        document.getElementById('reset-btn').addEventListener('click', () => this.reset());
+        this.difficultySelect.addEventListener('change', () => this.reset());
+        document.getElementById('play-again-btn').addEventListener('click', () => this.reset());
 
-        this.difficultySelect.addEventListener('change', () => {
-            console.log("Difficulty changed to:", this.difficultySelect.value);
-            this.reset();
-        });
-
-        document.getElementById('play-again-btn').addEventListener('click', () => {
-            console.log("Play again clicked");
-            this.reset();
+        // Ranking events
+        this.submitScoreBtn.addEventListener('click', () => this.handleSubmitScore());
+        this.closeRankingBtn.addEventListener('click', () => {
+            this.rankingContainer.classList.add('hidden');
         });
     }
 
@@ -113,26 +128,19 @@ class TowerOfHanoi {
         const disks = this.pegs[pegIndex];
 
         if (this.selectedDisk === null) {
-            // Selecting a disk
             if (disks.length > 0) {
-                // IMPORTANT: We need to store the disk itself to identify it in render()
-                // and its source peg to know where it came from.
                 this.selectedDisk = disks[disks.length - 1];
                 this.selectedPegIndex = pegIndex;
                 this.render();
             }
         } else {
-            // A disk is already selected, let's try to move it
             if (pegIndex === this.selectedPegIndex) {
-                // Clicked the same peg -> Deselect
                 this.selectedDisk = null;
                 this.selectedPegIndex = null;
                 this.render();
             } else {
-                // Check if move is valid
                 const targetDisks = this.pegs[pegIndex];
                 if (targetDisks.length === 0 || targetDisks[targetDisks.length - 1] > this.selectedDisk) {
-                    // Valid move
                     this.pegs[this.selectedPegIndex].pop();
                     this.pegs[pegIndex].push(this.selectedDisk);
                     this.moves++;
@@ -143,11 +151,7 @@ class TowerOfHanoi {
                     this.render();
                     this.checkWin();
                 } else {
-                    // Invalid move
                     this.flashMessage("ちいさい リングの うえには おけないよ！");
-                    // Don't deselect, let user try another peg
-                    // But we can render to update the selected state if needed
-                    // Actually, keeping the selection is better UX
                 }
             }
         }
@@ -169,7 +173,6 @@ class TowerOfHanoi {
     }
 
     checkWin() {
-        // Win if all disks are on the last peg
         if (this.pegs[2].length === this.numDisks) {
             setTimeout(() => {
                 this.finalMovesEl.textContent = this.moves;
@@ -182,6 +185,65 @@ class TowerOfHanoi {
                 }
             }, 300);
         }
+    }
+
+    async handleSubmitScore() {
+        const name = this.playerNameInput.value.trim() || 'ななしさん';
+        const scoreData = {
+            name: name,
+            moves: this.moves,
+            numDisks: this.numDisks,
+            timestamp: Date.now()
+        };
+
+        try {
+            const scoresRef = ref(db, `rankings/${this.numDisks}`);
+            const newScoreRef = push(scoresRef);
+            await set(newScoreRef, scoreData);
+
+            document.getElementById('ranking-input').classList.add('hidden');
+            this.showRanking();
+        } catch (error) {
+            console.error("Error saving score:", error);
+            alert("スコアの ほぞんに しっぱいしたよ...");
+        }
+    }
+
+    showRanking() {
+        const scoresRef = ref(db, `rankings/${this.numDisks}`);
+        const topScoresQuery = query(scoresRef, orderByChild('moves'), limitToFirst(10));
+
+        onValue(topScoresQuery, (snapshot) => {
+            this.rankingList.innerHTML = '';
+            const scores = [];
+            snapshot.forEach((childSnapshot) => {
+                scores.push(childSnapshot.val());
+            });
+
+            // Sort manually because orderByChild might need indexing or local sorting
+            scores.sort((a, b) => a.moves - b.moves);
+
+            scores.forEach((score, index) => {
+                const li = document.createElement('li');
+                li.className = `ranking-item rank-${index + 1}`;
+                li.innerHTML = `
+                    <div class="rank-badge">${index + 1}</div>
+                    <div class="player-info">
+                        <span class="player-name">${this.escapeHTML(score.name)}</span>
+                    </div>
+                    <div class="player-score">${score.moves}かい</div>
+                `;
+                this.rankingList.appendChild(li);
+            });
+
+            this.rankingContainer.classList.remove('hidden');
+        });
+    }
+
+    escapeHTML(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
     }
 }
 

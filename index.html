@@ -57,11 +57,27 @@
             <div id="win-screen" class="hidden">
                 <h2>おめでとう！</h2>
                 <p><span id="final-moves">0</span>かいで クリアできたよ！</p>
+                <div id="ranking-input">
+                    <input type="text" id="player-name" placeholder="なまえを いれてね" maxlength="10">
+                    <button id="submit-score">ランキングに のせる</button>
+                </div>
                 <button id="play-again-btn">もういちど あそぶ</button>
+            </div>
+
+            <div id="ranking-container" class="hidden">
+                <div id="ranking-box">
+                    <h3>👑 ランキング 🏆</h3>
+                    <ul id="ranking-list">
+                        <!-- Ranking items will appear here -->
+                    </ul>
+                    <button id="close-ranking">とじる</button>
+                </div>
             </div>
         </div>
     </div>
-    <script src="game.js"></script>
+
+    <!-- Load Firebase via CDN as modules -->
+    <script type="module" src="game.js"></script>
 </body>
 
 </html>

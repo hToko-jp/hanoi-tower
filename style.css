@@ -307,6 +307,148 @@ select:hover {
     display: none;
 }
 
+/* Ranking UI */
+#ranking-input {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+#player-name {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(241, 196, 15, 0.3);
+    border-radius: 12px;
+    padding: 0.8rem 1.5rem;
+    color: white;
+    font-size: 1rem;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s;
+}
+
+#player-name:focus {
+    border-color: #f1c40f;
+    box-shadow: 0 0 15px rgba(241, 196, 15, 0.2);
+}
+
+#ranking-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(2, 6, 23, 0.9);
+    backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    pointer-events: auto;
+}
+
+#ranking-box {
+    width: 90%;
+    max-width: 450px;
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.2), rgba(15, 23, 42, 0.8));
+    border: 2px solid #f1c40f;
+    border-radius: 40px;
+    padding: 2.5rem;
+    text-align: center;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
+}
+
+#ranking-box h3 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #f1c40f;
+    text-shadow: 0 0 10px rgba(241, 196, 15, 0.4);
+}
+
+#ranking-list {
+    list-style: none;
+    margin-bottom: 2rem;
+    max-height: 40vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+#ranking-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+#ranking-list::-webkit-scrollbar-thumb {
+    background: rgba(241, 196, 15, 0.3);
+    border-radius: 3px;
+}
+
+.ranking-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.2s;
+}
+
+.ranking-item:hover {
+    transform: scale(1.02);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.rank-badge {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    font-size: 0.9rem;
+    margin-right: 10px;
+}
+
+.rank-1 .rank-badge {
+    background: #f1c40f;
+    color: #000;
+}
+
+.rank-2 .rank-badge {
+    background: #bdc3c7;
+    color: #000;
+}
+
+.rank-3 .rank-badge {
+    background: #cd7f32;
+    color: #000;
+}
+
+.player-info {
+    flex: 1;
+    text-align: left;
+}
+
+.player-name {
+    font-weight: 600;
+}
+
+.player-score {
+    color: #f1c40f;
+    font-weight: 800;
+    font-size: 1.2rem;
+}
+
+#close-ranking {
+    width: 100%;
+    background: rgba(241, 196, 15, 0.1);
+    border-color: #f1c40f;
+    padding: 1rem;
+}
+
 @media (max-width: 600px) {
     #pegs-container {
         height: 45vh;
@@ -323,5 +465,9 @@ select:hover {
     .stats {
         gap: 1rem;
         padding: 0.5vh 1rem;
+    }
+
+    #ranking-box {
+        padding: 1.5rem;
     }
 }
