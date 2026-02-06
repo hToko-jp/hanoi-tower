@@ -122,6 +122,9 @@ class TowerOfHanoi {
         this.closeRankingBtn.addEventListener('click', () => {
             this.rankingContainer.classList.add('hidden');
         });
+        document.getElementById('view-ranking-btn').addEventListener('click', () => {
+            this.showRanking();
+        });
     }
 
     handlePegClick(pegIndex) {

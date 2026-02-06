@@ -100,6 +100,29 @@ body::before {
     border-color: #f1c40f;
 }
 
+#view-ranking-btn {
+    position: absolute;
+    top: 2vh;
+    left: 20px;
+    color: #f1c40f;
+    border: 1px solid rgba(241, 196, 15, 0.4);
+    padding: 0.8vh 20px;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    font-size: min(0.9rem, 1.8vh);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+#view-ranking-btn:hover {
+    background: rgba(241, 196, 15, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(241, 196, 15, 0.2);
+    border-color: #f1c40f;
+}
+
 header {
     text-align: center;
     padding: 0.5vh 0;
