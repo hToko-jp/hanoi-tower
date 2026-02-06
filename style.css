@@ -76,9 +76,34 @@ body::before {
     z-index: 1;
 }
 
+#help-link {
+    position: absolute;
+    top: 2vh;
+    right: 20px;
+    color: #f1c40f;
+    text-decoration: none;
+    font-size: min(0.9rem, 1.8vh);
+    font-weight: 600;
+    border: 1px solid rgba(241, 196, 15, 0.4);
+    padding: 0.8vh 20px;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+#help-link:hover {
+    background: rgba(241, 196, 15, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(241, 196, 15, 0.2);
+    border-color: #f1c40f;
+}
+
 header {
     text-align: center;
     padding: 0.5vh 0;
+    position: relative;
 }
 
 h1 {

@@ -1,0 +1,154 @@
+:root {
+    --gold: #f1c40f;
+    --deep-bg: #020617;
+    --card-bg: rgba(255, 255, 255, 0.05);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Zen Maru Gothic', 'Outfit', sans-serif;
+    background-color: var(--deep-bg);
+    background-image: radial-gradient(circle at center, #1e1b4b 0%, #020617 100%);
+    color: white;
+    line-height: 1.6;
+}
+
+#guide-app {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.emoji-icons {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 2rem;
+    color: var(--gold);
+    text-shadow: 0 0 15px rgba(241, 196, 15, 0.4);
+    margin-bottom: 0.5rem;
+}
+
+.intro {
+    font-size: 1.1rem;
+    color: #94a3b8;
+}
+
+h2 {
+    font-size: 1.5rem;
+    border-bottom: 2px solid var(--gold);
+    display: inline-block;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+section {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.goal-card {
+    border-left: 8px solid #f1c40f;
+}
+
+.card-content strong {
+    color: var(--gold);
+}
+
+.goal-illust {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    border-radius: 50px;
+    font-weight: bold;
+}
+
+.rule-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.rule-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.rule-text h3 {
+    margin: 0 0 0.3rem 0;
+    font-size: 1.2rem;
+    color: var(--gold);
+}
+
+.rule-text p {
+    margin: 0;
+    font-size: 1rem;
+    color: #cbd5e1;
+}
+
+.hint {
+    font-size: 0.9rem !important;
+    color: #94a3b8 !important;
+}
+
+.warning {
+    background: rgba(239, 68, 68, 0.1);
+    padding: 1rem;
+    border-radius: 15px;
+    border: 1px dashed rgba(239, 68, 68, 0.5);
+}
+
+.how-to-play ol {
+    padding-left: 1.5rem;
+}
+
+.how-to-play li {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.action-buttons {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.play-link {
+    display: inline-block;
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    color: #020617;
+    text-decoration: none;
+    padding: 1.2rem 3rem;
+    border-radius: 50px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    box-shadow: 0 10px 30px rgba(241, 196, 15, 0.4);
+    transition: transform 0.2s;
+}
+
+.play-link:hover {
+    transform: scale(1.05);
+}
+
+footer {
+    text-align: center;
+    margin-top: 4rem;
+    color: #64748b;
+    font-size: 0.9rem;
+}
